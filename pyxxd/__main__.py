@@ -1,7 +1,7 @@
 import os
 import tkinter
 import subprocess
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 FILENAME = ""
 
@@ -22,6 +22,14 @@ def saveb():
     btnsv.config(state=tkinter.DISABLED)
     text.config(state=tkinter.DISABLED)
 
+def saveasb():
+    new_file = asksaveasfilename()
+    new_text = text.get('1.0', 'end')
+    out = subprocess.run(["xxd", "-r", "-g1", "-", new_file], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
+    text.delete('1.0', 'end')
+    window.master.title("pyxxd")
+    btnsv.config(state=tkinter.DISABLED)
+    text.config(state=tkinter.DISABLED)
 
 if __name__ == "__main__":
     window = tkinter.Frame()
@@ -39,6 +47,9 @@ if __name__ == "__main__":
 
     btnsv = tkinter.Button(btns, text="Save", command=saveb, state=tkinter.DISABLED)
     btnsv.grid(column=1, row=0, sticky="NW")
+
+    btnsvs = tkinter.Button(btns, text="Save As", command=saveasb, state=tkinter.DISABLED)
+    btnsvs.grid(column=2, row=0, sticky="NW")
 
     text = tkinter.Text(window, width=80, height=20, state=tkinter.DISABLED)
     text.grid(column=0, row=1, sticky="NEWS")
