@@ -1,5 +1,6 @@
 import os
 import tkinter
+import subrocess
 from tkinter.filedialog import askopenfilename
 
 FILENAME = ""
@@ -10,18 +11,18 @@ def openb():
     window.master.title(os.path.basename(FILENAME))
     btnsv.config(state = tkinter.NORMAL)
     text.config(state = tkinter.NORMAL)
-    with open(FILENAME, "r") as fin:
-        src_text = fin.read();
-    text.insert("1.0", src_text)
+    out = subrocess.run(["xxd", "-g1", FILENAME], capture_output=True, shell=True)
+    text.insert("1.0", out.stdout)
 
 def saveb():
-    new_text = text.get('1.0', 'end')
-    with open(FILENAME, "w") as fout:
-        fout.write(new_text)
-    text.delete('1.0', 'end')
-    window.master.title("pyxxd")
-    btnsv.config(state = tkinter.DISABLED)
-    text.config(state = tkinter.DISABLED)
+    pass
+    # new_text = text.get('1.0', 'end')
+    # with open(FILENAME, "w") as fout:
+    #     fout.write(new_text)
+    # text.delete('1.0', 'end')
+    # window.master.title("pyxxd")
+    # btnsv.config(state = tkinter.DISABLED)
+    # text.config(state = tkinter.DISABLED)
 
 
 if __name__ == "__main__":
