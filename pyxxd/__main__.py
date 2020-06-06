@@ -80,7 +80,7 @@ if __name__ == "__main__":
     btnsvs = tkinter.Button(btns, text="Save As", command=saveasb, state=tkinter.DISABLED)
     btnsvs.grid(column=2, row=0, sticky="NW")
 
-    text = tkinter.Text(window, width=90, height=25, state=tkinter.DISABLED)
+    text = tkinter.Text(window, width=90, height=25, state=tkinter.DISABLED, font="fixed")
     text.grid(column=0, row=1, sticky="NEWS")
     scroll = tkinter.Scrollbar(window)
     scroll.config(command=text.yview)
