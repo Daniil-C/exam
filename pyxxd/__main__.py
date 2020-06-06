@@ -31,7 +31,9 @@ def onModification(event):
         #chars = len(event.widget.get("1.0", "end-1c"))
         new_text = text.get('1.0', 'end')
         out = subprocess.run(["xxd", "-r", "-g1", "-", "-"], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
-        text.insert("1.0", out.stdout)
+        if out.returncode == 1:
+            text.delete('1.0', 'end')
+            text.insert("1.0", out.stdout)
     MOD = False
 
 def openfile():
