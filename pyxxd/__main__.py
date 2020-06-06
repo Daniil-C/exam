@@ -19,4 +19,5 @@ if __name__ == "__main__":
     btn = tkinter.Button(window, text="Open", command=clicked)
     btn.grid(column=0, row=0, sticky="NW")
     text = tkinter.Text(window, width=100, height=40)
+    text.grid(column=0, row=1, sticky="NEWS")
     tkinter.mainloop();
