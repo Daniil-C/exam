@@ -20,4 +20,7 @@ if __name__ == "__main__":
     btn.grid(column=0, row=0, sticky="NW")
     text = tkinter.Text(window, width=100, height=40)
     text.grid(column=0, row=1, sticky="NEWS")
+    scroll = Scrollbar(command=text.yview)
+    scroll.grid(column=0, row=1, stiky="E")
+    text.config(yscrollcommand=scroll.set)
     tkinter.mainloop();
