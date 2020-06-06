@@ -13,6 +13,7 @@ def openfile():
     btnsvs.config(state = tkinter.NORMAL)
     text.config(state = tkinter.NORMAL)
     out = subprocess.run(["xxd", "-g1", FILENAME], stdout=subprocess.PIPE)
+    print(out.returncode)
     text.insert("1.0", out.stdout)
 
 def openb():
