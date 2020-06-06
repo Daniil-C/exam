@@ -1,3 +1,4 @@
+import os
 import tkinter
 from tkinter.filedialog import askopenfilename
 
@@ -16,5 +17,5 @@ if __name__ == "__main__":
     window.columnconfigure(0, weight=1)
     btn = tkinter.Button(window, text="Open", command=clicked)  
     btn.grid(column=0, row=0, sticky="NW")
-    window.title(os.path.basename(FILENAME))
+    window.master.title(os.path.basename(FILENAME))
     tkinter.mainloop();
