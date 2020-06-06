@@ -10,6 +10,7 @@ def openb():
     FILENAME = askopenfilename()
     window.master.title(os.path.basename(FILENAME))
     btnsv.config(state = tkinter.NORMAL)
+    btnsvs.config(state = tkinter.NORMAL)
     text.config(state = tkinter.NORMAL)
     out = subprocess.run(["xxd", "-g1", FILENAME], stdout=subprocess.PIPE)
     text.insert("1.0", out.stdout)
@@ -20,6 +21,7 @@ def saveb():
     text.delete('1.0', 'end')
     window.master.title("pyxxd")
     btnsv.config(state=tkinter.DISABLED)
+    btnsvs.config(state=tkinter.DISABLED)
     text.config(state=tkinter.DISABLED)
 
 def saveasb():
@@ -29,6 +31,7 @@ def saveasb():
     text.delete('1.0', 'end')
     window.master.title("pyxxd")
     btnsv.config(state=tkinter.DISABLED)
+    btnsvs.config(state=tkinter.DISABLED)
     text.config(state=tkinter.DISABLED)
 
 if __name__ == "__main__":
