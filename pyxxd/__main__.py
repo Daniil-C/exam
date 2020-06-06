@@ -18,9 +18,10 @@ if __name__ == "__main__":
     window.columnconfigure(0, weight=1)
     btn = tkinter.Button(window, text="Open", command=clicked)
     btn.grid(column=0, row=0, sticky="NW")
-    text = tkinter.Text(window, width=100, height=40)
+    text = tkinter.Text(window, width=80, height=20)
     text.grid(column=0, row=1, sticky="NEWS")
-    scroll = Scrollbar(command=text.yview)
-    scroll.grid(column=0, row=1, stiky="E")
+    scroll = tkinter.Scrollbar(window)
+    scroll.config(command=text.yview)
+    scroll.grid(column=1, row=1, sticky="NS")
     text.config(yscrollcommand=scroll.set)
     tkinter.mainloop();
