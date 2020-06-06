@@ -18,9 +18,11 @@ def openfile():
 def openb():
     global FILENAME
     FILENAME = askopenfilename()
-    openfile();
+    if FILENAME:
+        openfile();
 
 def saveb():
+    global FILENAME
     new_text = text.get('1.0', 'end')
     out_file = FILENAME
     if FILENAMEOUT != "":
@@ -36,14 +38,15 @@ def saveb():
 
 def saveasb():
     new_file = asksaveasfilename()
-    new_text = text.get('1.0', 'end')
-    out = subprocess.run(["xxd", "-r", "-g1", "-", new_file], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
-    text.delete('1.0', 'end')
-    window.master.title("pyxxd")
-    btnsv.config(state=tkinter.DISABLED)
-    btnsvs.config(state=tkinter.DISABLED)
-    text.config(state=tkinter.DISABLED)
-    FILENAMEOUT = ""
+    if new_file:
+        new_text = text.get('1.0', 'end')
+        out = subprocess.run(["xxd", "-r", "-g1", "-", new_file], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
+        text.delete('1.0', 'end')
+        window.master.title("pyxxd")
+        btnsv.config(state=tkinter.DISABLED)
+        btnsvs.config(state=tkinter.DISABLED)
+        text.config(state=tkinter.DISABLED)
+        FILENAMEOUT = ""
 
 if __name__ == "__main__":
     n = len(sys.argv)
