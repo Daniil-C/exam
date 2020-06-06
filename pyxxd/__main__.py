@@ -4,7 +4,6 @@ from tkinter.filedialog import askopenfilename
 FILENAME = ""
 
 def clicked():  
-    Tk().withdraw()
     FILENAME = askopenfilename()
 
 
