@@ -7,8 +7,8 @@ from tkinter import messagebox
 
 FILENAME = ""
 FILENMAEOUT = ""
-MOD = False
 FIRST = True
+
 
 class CustomText(tkinter.Text):
     def __init__(self, *args, **kwargs):
@@ -27,16 +27,18 @@ class CustomText(tkinter.Text):
         except Exception:
             pass
 
+
 def onModification(event):
     intext = event.widget.get("1.0", "end")
     lines = intext.split("\n")
     for i in range(1, len(lines) + 1):
         text.tag_add("address", "{}.{}".format(i, 0), "{}.{}".format(i, 8))
-        text.tag_add("data", "{}.{}".format(i, 10), "{}.{}".format(i, 58)) 
+        text.tag_add("data", "{}.{}".format(i, 10), "{}.{}".format(i, 58))
         text.tag_add("hdata", "{}.{}".format(i, 59), "{}.{}".format(i, 80))
     text.tag_config("address", foreground="deep pink")
     text.tag_config("data", foreground="blue2")
     text.tag_config("hdata", foreground="red")
+
 
 def openfile():
     global FILENAMEOUT
@@ -45,52 +47,51 @@ def openfile():
         FIRST = False
     else:
         FILENAMEOUT = ""
-    global MOD
     window.master.title(os.path.basename(FILENAME))
-    btnsv.config(state = tkinter.NORMAL)
-    btnsvs.config(state = tkinter.NORMAL)
-    text.config(state = tkinter.NORMAL)
+    btnsv.config(state=tkinter.NORMAL)
+    btnsvs.config(state=tkinter.NORMAL)
+    text.config(state=tkinter.NORMAL)
     out = subprocess.run(["xxd", "-g1", FILENAME], stdout=subprocess.PIPE)
     if out.returncode == 0:
-        MOD = True
         text.delete("1.0", "end")
         text.insert("1.0", out.stdout)
-        Mod = False
     else:
         messagebox.showerror("Error", "Can`t open file")
-    MOD = False
+
 
 def openb():
     global FILENAME
     FILENAME = askopenfilename()
     if FILENAME:
-        openfile();
+        openfile()
+
 
 def saveb():
     global FILENAMEOUT
-    global MOD
-    MOD = True
     new_text = text.get('1.0', 'end')
     out_file = FILENAME
     if FILENAMEOUT != "":
         out_file = FILENAMEOUT
-    out = subprocess.run(["xxd", "-r", "-g1", "-", out_file], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
+    out = subprocess.run(["xxd", "-r", "-g1", "-", out_file],
+                         input=new_text.encode("UTF-8"),
+                         stdout=subprocess.PIPE)
     if out.returncode != 0:
         messagebox.showerror("Error", "Can`t write to file")
-    MOD = False
     FILENAMEOUT = ""
 
+
 def saveasb():
-    global MOD
-    MOD = True
+    global FILENAMEOUT
     new_file = asksaveasfilename()
     if new_file:
         new_text = text.get('1.0', 'end')
-        out = subprocess.run(["xxd", "-r", "-g1", "-", new_file], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
+        out = subprocess.run(["xxd", "-r", "-g1", "-", new_file],
+                             input=new_text.encode("UTF-8"),
+                             stdout=subprocess.PIPE)
         if out.returncode != 0:
             messagebox.showerror("Error", "Can`t write to file")
         FILENAMEOUT = ""
-    MOD = False
+
 
 def undo():
     try:
@@ -98,11 +99,13 @@ def undo():
     except Exception:
         pass
 
+
 def redo():
     try:
         text.edit_redo()
     except Exception:
         pass
+
 
 def fnd():
     targ = en.get()
@@ -113,10 +116,12 @@ def fnd():
         text.tag_config("find", background="yellow")
         text.tag_raise("find")
     else:
-        messagebox.showinfo("Find", "Not found") 
+        messagebox.showinfo("Find", "Not found")
+
 
 def rmf():
     text.tag_delete("find")
+
 
 if __name__ == "__main__":
     n = len(sys.argv)
@@ -130,15 +135,17 @@ if __name__ == "__main__":
     window.rowconfigure(0, weight=1)
     window.columnconfigure(0, weight=1)
 
-    btns = tkinter.Frame(master = window)
+    btns = tkinter.Frame(master=window)
     btns.grid(row=0, column=0, sticky="NEWS")
     btnop = tkinter.Button(btns, text="Open", command=openb)
     btnop.grid(column=0, row=0, sticky="NW")
 
-    btnsv = tkinter.Button(btns, text="Save", command=saveb, state=tkinter.DISABLED)
+    btnsv = tkinter.Button(btns, text="Save",
+                           command=saveb, state=tkinter.DISABLED)
     btnsv.grid(column=1, row=0, sticky="NW")
 
-    btnsvs = tkinter.Button(btns, text="Save As", command=saveasb, state=tkinter.DISABLED)
+    btnsvs = tkinter.Button(btns, text="Save As",
+                            command=saveasb, state=tkinter.DISABLED)
     btnsvs.grid(column=2, row=0, sticky="NW")
 
     btnun = tkinter.Button(btns, text="Undo", command=undo)
@@ -146,7 +153,7 @@ if __name__ == "__main__":
 
     btnre = tkinter.Button(btns, text="Redo", command=redo)
     btnre.grid(column=4, row=0, sticky="NW")
-    
+
     btnsr = tkinter.Button(btns, text="Find", command=fnd)
     btnsr.grid(column=5, row=0, sticky="NW")
 
@@ -156,7 +163,8 @@ if __name__ == "__main__":
     en = tkinter.Entry(btns)
     en.grid(column=6, row=0, sticky="NW")
 
-    text = CustomText(window, width=90, height=25, undo = True, state=tkinter.DISABLED, font="fixed")
+    text = CustomText(window, width=90, height=25,
+                      undo=True, state=tkinter.DISABLED, font="fixed")
     text.grid(column=0, row=1, sticky="NEWS")
     text.bind("<<TextModified>>", onModification)
     scroll = tkinter.Scrollbar(window)
@@ -164,5 +172,5 @@ if __name__ == "__main__":
     scroll.grid(column=1, row=1, sticky="NS")
     text.config(yscrollcommand=scroll.set)
     if (FILENAME != ""):
-        openfile();
-    tkinter.mainloop();
+        openfile()
+    tkinter.mainloop()
