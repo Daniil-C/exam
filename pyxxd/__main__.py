@@ -4,8 +4,8 @@ from tkinter.filedialog import askopenfilename
 
 FILENAME = ""
 
-
-def openb():  
+def openb():
+    global FILENAME
     FILENAME = askopenfilename()
     window.master.title(os.path.basename(FILENAME))
     btnsv.config(state = tkinter.NORMAL)
