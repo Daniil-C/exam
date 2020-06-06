@@ -25,6 +25,7 @@ class CustomText(tkinter.Text):
         return result
 
 def onModification(event):
+    global MOD
     if not MOD:
         MOD = True
         #chars = len(event.widget.get("1.0", "end-1c"))
