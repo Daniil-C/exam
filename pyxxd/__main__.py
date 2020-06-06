@@ -1,4 +1,4 @@
-from tkinter import Tk
+import tkinter
 from tkinter.filedialog import askopenfilename
 
 FILENAME = ""
