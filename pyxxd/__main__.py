@@ -23,7 +23,7 @@ def openb():
 def saveb():
     new_text = text.get('1.0', 'end')
     out_file = FILENAME
-    if FILENNAMEOUT != "":
+    if FILENAMEOUT != "":
         out_file = FILENAMEOUT
     print(FILE)
     out = subprocess.run(["xxd", "-r", "-g1", "-", out_file], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
