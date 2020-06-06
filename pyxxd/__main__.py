@@ -101,9 +101,9 @@ if __name__ == "__main__":
         chars = len(event.widget.get("1.0", "end-1c"))
         print(chars)
 
-    text.bind("<<TextModified>>", onModification)
     text = CustomText(window, width=90, height=25, state=tkinter.DISABLED, font="fixed")
     text.grid(column=0, row=1, sticky="NEWS")
+    text.bind("<<TextModified>>", onModification)
     scroll = tkinter.Scrollbar(window)
     scroll.config(command=text.yview)
     scroll.grid(column=1, row=1, sticky="NS")
