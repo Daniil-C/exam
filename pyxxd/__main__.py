@@ -7,7 +7,7 @@ from tkinter import messagebox
 
 FILENAME = ""
 FILENMAEOUT = ""
-
+MOD = False
 
 class CustomText(tkinter.Text):
     def __init__(self, *args, **kwargs):
@@ -25,19 +25,25 @@ class CustomText(tkinter.Text):
         return result
 
 def onModification(event):
-    #chars = len(event.widget.get("1.0", "end-1c"))
-    new_text = text.get('1.0', 'end')
-    out = subprocess.run(["xxd", "-r", "-g1", "-", "-"], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
-    text.insert("1.0", out.stdout)
+    if not MOD:
+        MOD = True
+        #chars = len(event.widget.get("1.0", "end-1c"))
+        new_text = text.get('1.0', 'end')
+        out = subprocess.run(["xxd", "-r", "-g1", "-", "-"], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
+        text.insert("1.0", out.stdout)
+    MOD = False
 
 def openfile():
+    global MOD
     window.master.title(os.path.basename(FILENAME))
     btnsv.config(state = tkinter.NORMAL)
     btnsvs.config(state = tkinter.NORMAL)
     text.config(state = tkinter.NORMAL)
     out = subprocess.run(["xxd", "-g1", FILENAME], stdout=subprocess.PIPE)
     if out.returncode == 0:
+        MOD = True
         text.insert("1.0", out.stdout)
+        Mod = False
     else:
         messagebox.showerror("Error", "Can`t open file")
 
@@ -49,6 +55,8 @@ def openb():
 
 def saveb():
     global FILENAMEOUT
+    global MOD
+    MOD = True
     new_text = text.get('1.0', 'end')
     out_file = FILENAME
     if FILENAMEOUT != "":
@@ -62,9 +70,12 @@ def saveb():
         text.config(state=tkinter.DISABLED)
     else:
         messagebox.showerror("Error", "Can`t write to file")
+    MOD = False
     FILENAMEOUT = ""
 
 def saveasb():
+    global MOD
+    MOD = True
     new_file = asksaveasfilename()
     if new_file:
         new_text = text.get('1.0', 'end')
@@ -78,6 +89,7 @@ def saveasb():
         else:
             messagebox.showerror("Error", "Can`t write to file")
         FILENAMEOUT = ""
+    MOD = False
 
 if __name__ == "__main__":
     n = len(sys.argv)
