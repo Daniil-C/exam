@@ -11,7 +11,7 @@ def openb():
     window.master.title(os.path.basename(FILENAME))
     btnsv.config(state = tkinter.NORMAL)
     text.config(state = tkinter.NORMAL)
-    out = subprocess.run(["xxd", "-g1", FILENAME], capture_output=True, shell=True)
+    out = subprocess.run(["xxd", "-g1", FILENAME], stdout=subprocess.PIPE, shell=True)
     text.insert("1.0", out.stdout)
 
 def saveb():
