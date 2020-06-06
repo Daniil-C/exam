@@ -26,33 +26,37 @@ class CustomText(tkinter.Text):
         return result
 
 def onModification(event):
-    global MOD
-    print(MOD)
-    pos = text.index("insert")
-    if not MOD:
-        MOD = True
-        #chars = len(event.widget.get("1.0", "end-1c"))
-        new_text = text.get('1.0', 'end')
-        print(new_text[10:-16].split(" "))
-        nul = False
-        if len(new_text.split(" ")[0]) != 9 && new_text.split(" ")[0][-1] != ":":
-            MOD = False
-            return
-        for i in new_text[10:-16].split(" "):
-            print(len(i), nul)
-            if len(i) == 0:
-                nul = True
-            if len(i) % 2 == 1 or (len(i) > 0 and nul):
-                MOD = False
-                return
-        out = subprocess.run(["xxd", "-r", "-g1", "-", "-"], input=new_text[:-16].encode("UTF-8"), stdout=subprocess.PIPE)
-        out = subprocess.run(["xxd", "-g1"], input=out.stdout, stdout=subprocess.PIPE)
-        print(out.stdout, out.returncode)
-        if out.returncode == 0:
-            text.delete('1.0', 'end')
-            text.insert("1.0", out.stdout)
-        text.mark_set("insert", pos)
-        MOD = False
+    pass
+    # global MOD
+    # print(MOD)
+    # pos = text.index("insert")
+    # if not MOD:
+    #     MOD = True
+    #     #chars = len(event.widget.get("1.0", "end-1c"))
+    #     new_text = text.get('1.0', 'end')
+    #     print(new_text[10:-16].split(" "))
+    #     nul = False
+    #     if len(new_text.split(" ")[0]) != 9 && new_text.split(" ")[0][-1] != ":":
+    #         MOD = False
+    #         return
+    #     for i in new_text[10:-16].split(" "):
+    #         print(len(i), nul)
+    #         if len(i) == 0:
+    #             nul = True
+    #         if len(i) % 2 == 1 or (len(i) > 0 and nul):
+    #             MOD = False
+    #             return
+    #     out = subprocess.run(["xxd", "-r", "-g1", "-", "-"], input=new_text[:-16].encode("UTF-8"), stdout=subprocess.PIPE)
+    #     out = subprocess.run(["xxd", "-g1"], input=out.stdout, stdout=subprocess.PIPE)
+    #     print(out.stdout, out.returncode)
+    #     if out.returncode == 0:
+    #         text.delete('1.0', 'end')
+    #         text.insert("1.0", out.stdout)
+    #     text.mark_set("insert", pos)
+    #     MOD = False
+
+def onPress(event):
+    print(event)
 
 def openfile():
     global FILENAMEOUT
@@ -110,13 +114,13 @@ def saveasb():
 def undo():
     try:
         text.edit_undo()
-    else:
+    except Exception:
         pass
 
 def redo():
     try:
         text.edit_redo()
-    else:
+    except Exception:
         pass
 
 if __name__ == "__main__":
@@ -151,6 +155,7 @@ if __name__ == "__main__":
     text = CustomText(window, width=90, height=25, state=tkinter.DISABLED, font="fixed")
     text.grid(column=0, row=1, sticky="NEWS")
     text.bind("<<TextModified>>", onModification)
+    text.bind("<Key>", onPress)
     scroll = tkinter.Scrollbar(window)
     scroll.config(command=text.yview)
     scroll.grid(column=1, row=1, sticky="NS")
