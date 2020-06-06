@@ -13,8 +13,10 @@ def openfile():
     btnsvs.config(state = tkinter.NORMAL)
     text.config(state = tkinter.NORMAL)
     out = subprocess.run(["xxd", "-g1", FILENAME], stdout=subprocess.PIPE)
-    print(out.returncode)
-    text.insert("1.0", out.stdout)
+    if out.returncode == 0:
+        text.insert("1.0", out.stdout)
+    else:
+        tkinter.messagebox.showerror("Error", "Can`t open file")
 
 def openb():
     global FILENAME
@@ -29,11 +31,14 @@ def saveb():
     if FILENAMEOUT != "":
         out_file = FILENAMEOUT
     out = subprocess.run(["xxd", "-r", "-g1", "-", out_file], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
-    text.delete('1.0', 'end')
-    window.master.title("pyxxd")
-    btnsv.config(state=tkinter.DISABLED)
-    btnsvs.config(state=tkinter.DISABLED)
-    text.config(state=tkinter.DISABLED)
+    if out.returncode == 0:
+        text.delete('1.0', 'end')
+        window.master.title("pyxxd")
+        btnsv.config(state=tkinter.DISABLED)
+        btnsvs.config(state=tkinter.DISABLED)
+        text.config(state=tkinter.DISABLED)
+    else:
+        tkinter.messagebox.showerror("Error", "Can`t write to file")
     FILENAMEOUT = ""
 
 def saveasb():
@@ -41,11 +46,14 @@ def saveasb():
     if new_file:
         new_text = text.get('1.0', 'end')
         out = subprocess.run(["xxd", "-r", "-g1", "-", new_file], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
-        text.delete('1.0', 'end')
-        window.master.title("pyxxd")
-        btnsv.config(state=tkinter.DISABLED)
-        btnsvs.config(state=tkinter.DISABLED)
-        text.config(state=tkinter.DISABLED)
+        if out.returncode == 0:
+            text.delete('1.0', 'end')
+            window.master.title("pyxxd")
+            btnsv.config(state=tkinter.DISABLED)
+            btnsvs.config(state=tkinter.DISABLED)
+            text.config(state=tkinter.DISABLED)
+        else:
+            tkinter.messagebox.showerror("Error", "Can`t write to file")
         FILENAMEOUT = ""
 
 if __name__ == "__main__":
