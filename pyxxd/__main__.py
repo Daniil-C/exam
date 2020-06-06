@@ -8,6 +8,7 @@ from tkinter import messagebox
 FILENAME = ""
 FILENMAEOUT = ""
 MOD = False
+FIRST = True
 
 class CustomText(tkinter.Text):
     def __init__(self, *args, **kwargs):
@@ -54,6 +55,12 @@ def onModification(event):
         MOD = False
 
 def openfile():
+    global FILENAMEOUT
+    global FIRST
+    if FIRST:
+        FIRST = False
+    else:
+        FILENAMEOUT = ""
     global MOD
     window.master.title(os.path.basename(FILENAME))
     btnsv.config(state = tkinter.NORMAL)
@@ -83,13 +90,7 @@ def saveb():
     if FILENAMEOUT != "":
         out_file = FILENAMEOUT
     out = subprocess.run(["xxd", "-r", "-g1", "-", out_file], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
-    if out.returncode == 0:
-        text.delete('1.0', 'end')
-        window.master.title("pyxxd")
-        btnsv.config(state=tkinter.DISABLED)
-        btnsvs.config(state=tkinter.DISABLED)
-        text.config(state=tkinter.DISABLED)
-    else:
+    if out.returncode != 0:
         messagebox.showerror("Error", "Can`t write to file")
     MOD = False
     FILENAMEOUT = ""
@@ -101,16 +102,22 @@ def saveasb():
     if new_file:
         new_text = text.get('1.0', 'end')
         out = subprocess.run(["xxd", "-r", "-g1", "-", new_file], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
-        if out.returncode == 0:
-            text.delete('1.0', 'end')
-            window.master.title("pyxxd")
-            btnsv.config(state=tkinter.DISABLED)
-            btnsvs.config(state=tkinter.DISABLED)
-            text.config(state=tkinter.DISABLED)
-        else:
+        if out.returncode != 0:
             messagebox.showerror("Error", "Can`t write to file")
         FILENAMEOUT = ""
     MOD = False
+
+def undo():
+    try:
+        text.edit_undo()
+    else:
+        pass
+
+def redo():
+    try:
+        text.edit_redo()
+    else:
+        pass
 
 if __name__ == "__main__":
     n = len(sys.argv)
@@ -134,6 +141,13 @@ if __name__ == "__main__":
 
     btnsvs = tkinter.Button(btns, text="Save As", command=saveasb, state=tkinter.DISABLED)
     btnsvs.grid(column=2, row=0, sticky="NW")
+
+    btnun = tkinter.Button(btns, text="Undo", command=undo, state=tkinter.DISABLED)
+    btnun.grid(column=3, row=0, sticky="NW")
+
+    btnre = tkinter.Button(btns, text="Redo", command=redo, state=tkinter.DISABLED)
+    btnre.grid(column=4, row=0, sticky="NW")
+
     text = CustomText(window, width=90, height=25, state=tkinter.DISABLED, font="fixed")
     text.grid(column=0, row=1, sticky="NEWS")
     text.bind("<<TextModified>>", onModification)
