@@ -19,42 +19,24 @@ class CustomText(tkinter.Text):
 
     def _proxy(self, command, *args):
         cmd = (self._orig, command) + args
-        result = self.tk.call(cmd)
-
-        if command in ("insert", "delete", "replace"):
-            self.event_generate("<<TextModified>>")
-        return result
+        try:
+            result = self.tk.call(cmd)
+            if command in ("insert", "delete", "replace"):
+                self.event_generate("<<TextModified>>")
+            return result
+        except Exception:
+            pass
 
 def onModification(event):
-    chars = len(event.widget.get("1.0", "end-1c"))
-    print(chars)
-    # global MOD
-    # print(MOD)
-    # pos = text.index("insert")
-    # if not MOD:
-    #     MOD = True
-    #     #chars = len(event.widget.get("1.0", "end-1c"))
-    #     new_text = text.get('1.0', 'end')
-    #     print(new_text[10:-16].split(" "))
-    #     nul = False
-    #     if len(new_text.split(" ")[0]) != 9 && new_text.split(" ")[0][-1] != ":":
-    #         MOD = False
-    #         return
-    #     for i in new_text[10:-16].split(" "):
-    #         print(len(i), nul)
-    #         if len(i) == 0:
-    #             nul = True
-    #         if len(i) % 2 == 1 or (len(i) > 0 and nul):
-    #             MOD = False
-    #             return
-    #     out = subprocess.run(["xxd", "-r", "-g1", "-", "-"], input=new_text[:-16].encode("UTF-8"), stdout=subprocess.PIPE)
-    #     out = subprocess.run(["xxd", "-g1"], input=out.stdout, stdout=subprocess.PIPE)
-    #     print(out.stdout, out.returncode)
-    #     if out.returncode == 0:
-    #         text.delete('1.0', 'end')
-    #         text.insert("1.0", out.stdout)
-    #     text.mark_set("insert", pos)
-    #     MOD = False
+    intext = event.widget.get("1.0", "end")
+    lines = intext.split("\n")
+    for i in range(1, len(lines) + 1):
+        text.tag_add("address", "{}.{}".format(i, 0), "{}.{}".format(i, 8))
+        text.tag_add("data", "{}.{}".format(i, 10), "{}.{}".format(i, 58)) 
+        text.tag_add("hdata", "{}.{}".format(i, 59), "{}.{}".format(i, 80))
+    text.tag_config("address", foreground="deep pink")
+    text.tag_config("data", foreground="blue2")
+    text.tag_config("hdata", foreground="red")
 
 def openfile():
     global FILENAMEOUT
@@ -71,6 +53,7 @@ def openfile():
     out = subprocess.run(["xxd", "-g1", FILENAME], stdout=subprocess.PIPE)
     if out.returncode == 0:
         MOD = True
+        text.delete("1.0", "end")
         text.insert("1.0", out.stdout)
         Mod = False
     else:
@@ -121,6 +104,20 @@ def redo():
     except Exception:
         pass
 
+def fnd():
+    targ = en.get()
+    index = text.search(targ, "1.0", "end")
+    if index != "":
+        line, col = index.split(".")
+        text.tag_add("find", index, "{}.{}".format(line, int(col) + len(targ)))
+        text.tag_config("find", background="yellow")
+        text.tag_raise("find")
+    else:
+        messagebox.showinfo("Find", "Not found") 
+
+def rmf():
+    text.tag_delete("find")
+
 if __name__ == "__main__":
     n = len(sys.argv)
     FILENAME = sys.argv[1] if n >= 2 else ""
@@ -149,6 +146,15 @@ if __name__ == "__main__":
 
     btnre = tkinter.Button(btns, text="Redo", command=redo)
     btnre.grid(column=4, row=0, sticky="NW")
+    
+    btnsr = tkinter.Button(btns, text="Find", command=fnd)
+    btnsr.grid(column=5, row=0, sticky="NW")
+
+    btncl = tkinter.Button(btns, text="Clear selection", command=rmf)
+    btncl.grid(column=7, row=0, sticky="NW")
+
+    en = tkinter.Entry(btns)
+    en.grid(column=6, row=0, sticky="NW")
 
     text = CustomText(window, width=90, height=25, undo = True, state=tkinter.DISABLED, font="fixed")
     text.grid(column=0, row=1, sticky="NEWS")
