@@ -1,23 +1,31 @@
 import os
+import sys
 import tkinter
 import subprocess
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 FILENAME = ""
+FILENMAEOUT = ""
 
-def openb():
-    global FILENAME
-    FILENAME = askopenfilename()
-    window.master.title(os.path.basename(FILENAME))
+def openfile():
     btnsv.config(state = tkinter.NORMAL)
     btnsvs.config(state = tkinter.NORMAL)
     text.config(state = tkinter.NORMAL)
     out = subprocess.run(["xxd", "-g1", FILENAME], stdout=subprocess.PIPE)
     text.insert("1.0", out.stdout)
 
+def openb():
+    global FILENAME
+    FILENAME = askopenfilename()
+    window.master.title(os.path.basename(FILENAME))
+    openfile();
+
 def saveb():
     new_text = text.get('1.0', 'end')
-    out = subprocess.run(["xxd", "-r", "-g1", "-", FILENAME], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
+    out_file = FILENAME
+    if FILENMAEOUT != "":
+        out_file = FILENMAEOUT
+    out = subprocess.run(["xxd", "-r", "-g1", "-", out_file], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
     text.delete('1.0', 'end')
     window.master.title("pyxxd")
     btnsv.config(state=tkinter.DISABLED)
@@ -35,6 +43,8 @@ def saveasb():
     text.config(state=tkinter.DISABLED)
 
 if __name__ == "__main__":
+    FILENAME = sys.argv[1] if sys.argc >= 1
+    FILENAMEOUT = sys.argv[2] if sys.argc >= 2
     window = tkinter.Frame()
     window.master.rowconfigure(0, weight=1)
     window.master.columnconfigure(0, weight=1)
@@ -60,4 +70,6 @@ if __name__ == "__main__":
     scroll.config(command=text.yview)
     scroll.grid(column=1, row=1, sticky="NS")
     text.config(yscrollcommand=scroll.set)
+    if (FILENAME != ""):
+        openfile();
     tkinter.mainloop();
