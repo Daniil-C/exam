@@ -15,6 +15,6 @@ if __name__ == "__main__":
     window.rowconfigure(0, weight=1)
     window.columnconfigure(0, weight=1)
     btn = tkinter.Button(window, text="Open", command=clicked)  
-    btn.grid(column=0, row=1, sticky="NEWS")
+    btn.grid(column=0, row=0)
     print(FILENAME)
     tkinter.mainloop();
