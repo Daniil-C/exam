@@ -3,6 +3,7 @@ import sys
 import tkinter
 import subprocess
 from tkinter.filedialog import askopenfilename, asksaveasfilename
+from tkinter import messagebox
 
 FILENAME = ""
 FILENMAEOUT = ""
@@ -16,7 +17,7 @@ def openfile():
     if out.returncode == 0:
         text.insert("1.0", out.stdout)
     else:
-        tkinter.messagebox.showerror("Error", "Can`t open file")
+        messagebox.showerror("Error", "Can`t open file")
 
 def openb():
     global FILENAME
@@ -38,7 +39,7 @@ def saveb():
         btnsvs.config(state=tkinter.DISABLED)
         text.config(state=tkinter.DISABLED)
     else:
-        tkinter.messagebox.showerror("Error", "Can`t write to file")
+        messagebox.showerror("Error", "Can`t write to file")
     FILENAMEOUT = ""
 
 def saveasb():
@@ -53,7 +54,7 @@ def saveasb():
             btnsvs.config(state=tkinter.DISABLED)
             text.config(state=tkinter.DISABLED)
         else:
-            tkinter.messagebox.showerror("Error", "Can`t write to file")
+            messagebox.showerror("Error", "Can`t write to file")
         FILENAMEOUT = ""
 
 if __name__ == "__main__":
