@@ -102,7 +102,7 @@ if __name__ == "__main__":
         print(chars)
 
     text.bind("<<TextModified>>", onModification)
-    text = CustomText(window, width=90, height=25, state=tkinter.DISABLED)
+    text = CustomText(window, width=90, height=25, state=tkinter.DISABLED, font="fixed")
     text.grid(column=0, row=1, sticky="NEWS")
     scroll = tkinter.Scrollbar(window)
     scroll.config(command=text.yview)
