@@ -15,7 +15,7 @@ if __name__ == "__main__":
     window = tkinter.Frame()
     window.master.rowconfigure(0, weight=1)
     window.master.columnconfigure(0, weight=1)
-    window.grid(ow=0, column=0, sticky="NEWS")
+    window.grid(row=0, column=0, sticky="NEWS")
     window.rowconfigure(0, weight=1)
     window.columnconfigure(0, weight=1)
 
