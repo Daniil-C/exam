@@ -16,7 +16,7 @@ def openb():
 
 def saveb():
     new_text = text.get('1.0', 'end')
-    out = subprocess.run(["xxd", "-r", "-g1", "-", FILENAME], input=new_text, stdout=subprocess.PIPE)
+    out = subprocess.run(["xxd", "-r", "-g1", "-", FILENAME], input=new_text.endcode("UTF-8"), stdout=subprocess.PIPE)
     text.delete('1.0', 'end')
     window.master.title("pyxxd")
     btnsv.config(state=tkinter.DISABLED)
