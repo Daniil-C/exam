@@ -31,7 +31,7 @@ def onModification(event):
         #chars = len(event.widget.get("1.0", "end-1c"))
         new_text = text.get('1.0', 'end')
         out = subprocess.run(["xxd", "-r", "-g1", "-", "-"], input=new_text[:-16].encode("UTF-8"), stdout=subprocess.PIPE)
-        out = subprocess.run(["xxd", "-g1"], input=out.stdout.encode("UTF-8"), stdout=subprocess.PIPE)
+        out = subprocess.run(["xxd", "-g1"], input=out.stdout, stdout=subprocess.PIPE)
         print(out.stdout)
         if out.returncode == 0:
             text.delete('1.0', 'end')
