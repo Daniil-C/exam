@@ -24,6 +24,11 @@ class CustomText(tkinter.Text):
             self.event_generate("<<TextModified>>")
         return result
 
+def onModification(event):
+    #chars = len(event.widget.get("1.0", "end-1c"))
+    new_text = text.get('1.0', 'end')
+    out = subprocess.run(["xxd", "-r", "-g1", "-", "-"], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
+    text.insert("1.0", out.stdout)
 
 def openfile():
     window.master.title(os.path.basename(FILENAME))
@@ -96,11 +101,6 @@ if __name__ == "__main__":
 
     btnsvs = tkinter.Button(btns, text="Save As", command=saveasb, state=tkinter.DISABLED)
     btnsvs.grid(column=2, row=0, sticky="NW")
-
-    def onModification(event):
-        chars = len(event.widget.get("1.0", "end-1c"))
-        print(chars)
-
     text = CustomText(window, width=90, height=25, state=tkinter.DISABLED, font="fixed")
     text.grid(column=0, row=1, sticky="NEWS")
     text.bind("<<TextModified>>", onModification)
