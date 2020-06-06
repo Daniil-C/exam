@@ -31,6 +31,7 @@ def saveb():
     btnsv.config(state=tkinter.DISABLED)
     btnsvs.config(state=tkinter.DISABLED)
     text.config(state=tkinter.DISABLED)
+    FILENAMEOUT = ""
 
 def saveasb():
     new_file = asksaveasfilename()
@@ -41,10 +42,11 @@ def saveasb():
     btnsv.config(state=tkinter.DISABLED)
     btnsvs.config(state=tkinter.DISABLED)
     text.config(state=tkinter.DISABLED)
+    FILENAMEOUT = ""
 
 if __name__ == "__main__":
-    FILENAME = sys.argv[1] if sys.argc >= 1
-    FILENAMEOUT = sys.argv[2] if sys.argc >= 2
+    FILENAME = sys.argv[1] if sys.argc >= 1 else ""
+    FILENAMEOUT = sys.argv[2] if sys.argc >= 2 else ""
     window = tkinter.Frame()
     window.master.rowconfigure(0, weight=1)
     window.master.columnconfigure(0, weight=1)
