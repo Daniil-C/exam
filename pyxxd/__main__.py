@@ -46,8 +46,8 @@ def saveasb():
 
 if __name__ == "__main__":
     n = len(sys.argv)
-    FILENAME = sys.argv[1] if n >= 1 else ""
-    FILENAMEOUT = sys.argv[2] if n >= 2 else ""
+    FILENAME = sys.argv[1] if n >= 2 else ""
+    FILENAMEOUT = sys.argv[2] if n >= 3 else ""
     window = tkinter.Frame()
     window.master.rowconfigure(0, weight=1)
     window.master.columnconfigure(0, weight=1)
