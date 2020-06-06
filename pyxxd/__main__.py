@@ -34,6 +34,9 @@ def onModification(event):
         new_text = text.get('1.0', 'end')
         print(new_text[10:-16].split(" "))
         nul = False
+        if len(new_text.split(" ")[0]) != 9 && new_text.split(" ")[0][-1] != ":":
+            MOD = False
+            return
         for i in new_text[10:-16].split(" "):
             print(len(i), nul)
             if len(i) == 0:
