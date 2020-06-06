@@ -22,7 +22,7 @@ def openb():
         openfile();
 
 def saveb():
-    global FILENAME
+    global FILENAMEOUT
     new_text = text.get('1.0', 'end')
     out_file = FILENAME
     if FILENAMEOUT != "":
