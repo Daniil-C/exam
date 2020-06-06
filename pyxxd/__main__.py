@@ -26,7 +26,8 @@ class CustomText(tkinter.Text):
         return result
 
 def onModification(event):
-    pass
+    chars = len(event.widget.get("1.0", "end-1c"))
+    print(chars)
     # global MOD
     # print(MOD)
     # pos = text.index("insert")
@@ -54,9 +55,6 @@ def onModification(event):
     #         text.insert("1.0", out.stdout)
     #     text.mark_set("insert", pos)
     #     MOD = False
-
-def onPress(event):
-    print(event.char)
 
 def openfile():
     global FILENAMEOUT
@@ -152,10 +150,9 @@ if __name__ == "__main__":
     btnre = tkinter.Button(btns, text="Redo", command=redo)
     btnre.grid(column=4, row=0, sticky="NW")
 
-    text = CustomText(window, width=90, height=25, state=tkinter.DISABLED, font="fixed")
+    text = CustomText(window, width=90, height=25, undo = True, state=tkinter.DISABLED, font="fixed")
     text.grid(column=0, row=1, sticky="NEWS")
     text.bind("<<TextModified>>", onModification)
-    text.bind("<Key>", onPress)
     scroll = tkinter.Scrollbar(window)
     scroll.config(command=text.yview)
     scroll.grid(column=1, row=1, sticky="NS")
