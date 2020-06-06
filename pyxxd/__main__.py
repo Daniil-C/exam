@@ -11,18 +11,16 @@ def openb():
     window.master.title(os.path.basename(FILENAME))
     btnsv.config(state = tkinter.NORMAL)
     text.config(state = tkinter.NORMAL)
-    out = subprocess.run(["xxd", "-g1", FILENAME], stdout=subprocess.PIPE, shell=True)
+    out = subprocess.run(["xxd", "-g1", FILENAME], stdout=subprocess.PIPE)
     text.insert("1.0", out.stdout)
 
 def saveb():
-    pass
-    # new_text = text.get('1.0', 'end')
-    # with open(FILENAME, "w") as fout:
-    #     fout.write(new_text)
-    # text.delete('1.0', 'end')
-    # window.master.title("pyxxd")
-    # btnsv.config(state = tkinter.DISABLED)
-    # text.config(state = tkinter.DISABLED)
+    new_text = text.get('1.0', 'end')
+    out = subprocess.run(["xxd", "-r", "-g1", "-", FILENAME, new_text], stdout=subprocess.PIPE)
+    text.delete('1.0', 'end')
+    window.master.title("pyxxd")
+    btnsv.config(state=tkinter.DISABLED)
+    text.config(state=tkinter.DISABLED)
 
 
 if __name__ == "__main__":
@@ -39,10 +37,10 @@ if __name__ == "__main__":
     btnop = tkinter.Button(btns, text="Open", command=openb)
     btnop.grid(column=0, row=0, sticky="NW")
 
-    btnsv = tkinter.Button(btns, text="Save", command=saveb, state = tkinter.DISABLED)
+    btnsv = tkinter.Button(btns, text="Save", command=saveb, state=tkinter.DISABLED)
     btnsv.grid(column=1, row=0, sticky="NW")
 
-    text = tkinter.Text(window, width=80, height=20, state = tkinter.DISABLED)
+    text = tkinter.Text(window, width=80, height=20, state=tkinter.DISABLED)
     text.grid(column=0, row=1, sticky="NEWS")
     scroll = tkinter.Scrollbar(window)
     scroll.config(command=text.yview)
