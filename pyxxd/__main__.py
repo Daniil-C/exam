@@ -1,24 +1,24 @@
 import os
 import tkinter
-from tkinter.filedialog import askopenfilename
+
+FILENAME = ""
 
 
 def openb():  
-    filename = askopenfilename()
-    window.master.title(os.path.basename(filename))
+    FILENAME = tkinter.filedialog()
+    window.master.title(os.path.basename(FILENAME))
     btnsv.config(state = tkinter.NORMAL)
     text.config(state = tkinter.NORMAL)
-    with open(filename, "r") as fin:
+    with open(FILENAME, "r") as fin:
         src_text = fin.read();
     text.insert("1.0", src_text)
 
 def saveb():
     new_text = text.get('1.0', 'end')
-    with open(filename, "w") as fout:
+    with open(FILENAME, "w") as fout:
         fout.write(new_text)
 
 if __name__ == "__main__":
-    filename = ""
     window = tkinter.Frame()
     window.master.rowconfigure(0, weight=1)
     window.master.columnconfigure(0, weight=1)
