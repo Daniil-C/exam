@@ -18,11 +18,17 @@ def saveb():
     new_text = text.get('1.0', 'end')
     with open(FILENAME, "w") as fout:
         fout.write(new_text)
+    text.delete('1.0', 'end')
+    window.master.title("pyxxd")
+    btnsv.config(state = tkinter.DISABLED)
+    text.config(state = tkinter.DISABLED)
+
 
 if __name__ == "__main__":
     window = tkinter.Frame()
     window.master.rowconfigure(0, weight=1)
     window.master.columnconfigure(0, weight=1)
+    window.master.title("pyxxd")
     window.grid(row=0, column=0, sticky="NEWS")
     window.rowconfigure(0, weight=1)
     window.columnconfigure(0, weight=1)
