@@ -6,6 +6,7 @@ FILENAME = ""
 
 def clicked():  
     FILENAME = askopenfilename()
+    window.master.title(os.path.basename(FILENAME))
 
 
 if __name__ == "__main__":
@@ -17,5 +18,4 @@ if __name__ == "__main__":
     window.columnconfigure(0, weight=1)
     btn = tkinter.Button(window, text="Open", command=clicked)  
     btn.grid(column=0, row=0, sticky="NW")
-    window.master.title(os.path.basename(FILENAME))
     tkinter.mainloop();
