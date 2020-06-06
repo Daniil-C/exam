@@ -13,12 +13,12 @@ class CustomText(tkinter.Text):
     def __init__(self, *args, **kwargs):
         tkinter.Text.__init__(self, *args, **kwargs)
         self._orig = self._w + "_orig"
-        tkinter.call("rename", self._w, self._orig)
-        tkinter.createcommand(self._w, self._proxy)
+        self.tk.call("rename", self._w, self._orig)
+        self.tk.createcommand(self._w, self._proxy)
 
     def _proxy(self, command, *args):
         cmd = (self._orig, command) + args
-        result = tkinter.call(cmd)
+        result = self.tk.call(cmd)
 
         if command in ("insert", "delete", "replace"):
             self.event_generate("<<TextModified>>")
