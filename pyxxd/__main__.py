@@ -27,16 +27,28 @@ class CustomText(tkinter.Text):
 
 def onModification(event):
     global MOD
+    print(MOD)
+    pos = text.index("insert")
     if not MOD:
         MOD = True
         #chars = len(event.widget.get("1.0", "end-1c"))
         new_text = text.get('1.0', 'end')
+        print(new_text[10:-16].split(" "))
+        nul = False
+        for i in new_text[10:-16].split(" "):
+            print(len(i), nul)
+            if len(i) == 0:
+                nul = True
+            if len(i) % 2 == 1 or (len(i) > 0 and nul):
+                MOD = False
+                return
         out = subprocess.run(["xxd", "-r", "-g1", "-", "-"], input=new_text[:-16].encode("UTF-8"), stdout=subprocess.PIPE)
         out = subprocess.run(["xxd", "-g1"], input=out.stdout, stdout=subprocess.PIPE)
         print(out.stdout, out.returncode)
         if out.returncode == 0:
             text.delete('1.0', 'end')
             text.insert("1.0", out.stdout)
+        text.mark_set("insert", pos)
         MOD = False
 
 def openfile():
@@ -58,6 +70,7 @@ def openfile():
         Mod = False
     else:
         messagebox.showerror("Error", "Can`t open file")
+    MOD = False
 
 def openb():
     global FILENAME
