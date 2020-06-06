@@ -36,7 +36,7 @@ def onModification(event):
         if out.returncode == 0:
             text.delete('1.0', 'end')
             text.insert("1.0", out.stdout)
-    MOD = False
+        MOD = False
 
 def openfile():
     global MOD
