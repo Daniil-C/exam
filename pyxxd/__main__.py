@@ -56,7 +56,7 @@ def onModification(event):
     #     MOD = False
 
 def onPress(event):
-    print(event)
+    print(event.char)
 
 def openfile():
     global FILENAMEOUT
@@ -146,10 +146,10 @@ if __name__ == "__main__":
     btnsvs = tkinter.Button(btns, text="Save As", command=saveasb, state=tkinter.DISABLED)
     btnsvs.grid(column=2, row=0, sticky="NW")
 
-    btnun = tkinter.Button(btns, text="Undo", command=undo, state=tkinter.DISABLED)
+    btnun = tkinter.Button(btns, text="Undo", command=undo)
     btnun.grid(column=3, row=0, sticky="NW")
 
-    btnre = tkinter.Button(btns, text="Redo", command=redo, state=tkinter.DISABLED)
+    btnre = tkinter.Button(btns, text="Redo", command=redo)
     btnre.grid(column=4, row=0, sticky="NW")
 
     text = CustomText(window, width=90, height=25, state=tkinter.DISABLED, font="fixed")
