@@ -8,6 +8,23 @@ from tkinter import messagebox
 FILENAME = ""
 FILENMAEOUT = ""
 
+
+class CustomText(tkinter.Text):
+    def __init__(self, *args, **kwargs):
+        tk.Text.__init__(self, *args, **kwargs)
+        self._orig = self._w + "_orig"
+        self.tk.call("rename", self._w, self._orig)
+        self.tk.createcommand(self._w, self._proxy)
+
+    def _proxy(self, command, *args):
+        cmd = (self._orig, command) + args
+        result = self.tk.call(cmd)
+
+        if command in ("insert", "delete", "replace"):
+            self.event_generate("<<TextModified>>")
+        return result
+
+
 def openfile():
     window.master.title(os.path.basename(FILENAME))
     btnsv.config(state = tkinter.NORMAL)
@@ -80,7 +97,12 @@ if __name__ == "__main__":
     btnsvs = tkinter.Button(btns, text="Save As", command=saveasb, state=tkinter.DISABLED)
     btnsvs.grid(column=2, row=0, sticky="NW")
 
-    text = tkinter.Text(window, width=90, height=25, state=tkinter.DISABLED)
+    def onModification(event):
+        chars = len(event.widget.get("1.0", "end-1c"))
+        print(chars)
+
+    text.bind("<<TextModified>>", onModification)
+    text = CustomText(window, width=90, height=25, state=tkinter.DISABLED)
     text.grid(column=0, row=1, sticky="NEWS")
     scroll = tkinter.Scrollbar(window)
     scroll.config(command=text.yview)
