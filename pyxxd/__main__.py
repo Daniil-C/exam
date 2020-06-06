@@ -1,11 +1,12 @@
 import os
 import tkinter
+from tkinter.filedialog import askopenfilename
 
 FILENAME = ""
 
 
 def openb():  
-    FILENAME = tkinter.filedialog()
+    FILENAME = askopenfilename()
     window.master.title(os.path.basename(FILENAME))
     btnsv.config(state = tkinter.NORMAL)
     text.config(state = tkinter.NORMAL)
