@@ -7,6 +7,7 @@ FILENAME = ""
 def openb():  
     FILENAME = askopenfilename()
     window.master.title(os.path.basename(FILENAME))
+    btnsv.config(state = tkinter.enabled)
 
 def saveb():
     pass
@@ -24,7 +25,7 @@ if __name__ == "__main__":
     btnop = tkinter.Button(btns, text="Open", command=openb)
     btnop.grid(column=0, row=0, sticky="NW")
 
-    btnsv = tkinter.Button(btns, text="Save", command=saveb)
+    btnsv = tkinter.Button(btns, text="Save", command=saveb, state = tkinter.disabled)
     btnsv.grid(column=1, row=0, sticky="NW")
 
     text = tkinter.Text(window, width=80, height=20)
