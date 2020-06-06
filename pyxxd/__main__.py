@@ -8,6 +8,7 @@ FILENAME = ""
 FILENMAEOUT = ""
 
 def openfile():
+    window.master.title(os.path.basename(FILENAME))
     btnsv.config(state = tkinter.NORMAL)
     btnsvs.config(state = tkinter.NORMAL)
     text.config(state = tkinter.NORMAL)
@@ -17,7 +18,6 @@ def openfile():
 def openb():
     global FILENAME
     FILENAME = askopenfilename()
-    window.master.title(os.path.basename(FILENAME))
     openfile();
 
 def saveb():
@@ -25,6 +25,7 @@ def saveb():
     out_file = FILENAME
     if FILENMAEOUT != "":
         out_file = FILENMAEOUT
+    print(out_file)
     out = subprocess.run(["xxd", "-r", "-g1", "-", out_file], input=new_text.encode("UTF-8"), stdout=subprocess.PIPE)
     text.delete('1.0', 'end')
     window.master.title("pyxxd")
